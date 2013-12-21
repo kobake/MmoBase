@@ -29,3 +29,4 @@ proguard/
 .idea/
 /proguard_cache
 /bin
+/.cache
