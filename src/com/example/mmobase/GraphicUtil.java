@@ -149,12 +149,11 @@ public class GraphicUtil {
 
 		// 要素数8の頂点バッファ用意 （XY(2値) * 4頂点 = 8要素）
 		// これは描画元の頂点リストを示す
-		// 左上,右上,右下,左下
 		float[] coords = getCoords(8);
-		coords[0] = u;         coords[1] = v + tex_h; // 左上
-		coords[2] = u + tex_w; coords[3] = v + tex_h; // 右上
-		coords[4] = u;         coords[5] = v;         // 右下
-		coords[6] = u + tex_w; coords[7] = v;         // 左下
+		coords[0] = u;         coords[1] = v + tex_h;
+		coords[2] = u + tex_w; coords[3] = v + tex_h;
+		coords[4] = u;         coords[5] = v;
+		coords[6] = u + tex_w; coords[7] = v;
 
 		FloatBuffer squareVertices = makeVerticesBuffer(vertices);
 		FloatBuffer squareColors = makeColorsBuffer(colors);
