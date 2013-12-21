@@ -21,7 +21,7 @@ class MainFragment extends Fragment {
     //    mGLView.setEGLContextClientVersion(2)
     mGLView.setEGLContextClientVersion(1)
     mGLView.setPreserveEGLContextOnPause(true)
-    mGLView.setRenderer(new MainRenderer())
+    mGLView.setRenderer(new MainRenderer(getActivity()))
     mGLView
   }
 }
