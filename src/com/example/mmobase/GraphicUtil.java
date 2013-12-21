@@ -20,6 +20,7 @@ public class GraphicUtil {
 	private static Hashtable<Integer, float[]> colorsPool = new Hashtable<Integer, float[]>();
 	private static Hashtable<Integer, float[]> coordsPool = new Hashtable<Integer, float[]>();
 
+	// プールの取得です （nは頂点数）
 	public static float[] getVertices(int n) {
 		if (verticesPool.containsKey(n)) {
 			return verticesPool.get(n);
@@ -29,6 +30,7 @@ public class GraphicUtil {
 		return vertices;
 	}
 
+	// プールの取得です （nは要素数）
 	public static float[] getColors(int n) {
 		if (colorsPool.containsKey(n)) {
 			return colorsPool.get(n);
@@ -115,19 +117,28 @@ public class GraphicUtil {
 		drawTexture(gl, x, y, w, h, texture, u, v, 0.25f, 0.25f, r, g, b, a);
 	}
 
-	public static final void drawTexture(GL10 gl, float x, float y, float w,
-			float h, int texture, float u, float v, float tex_w, float tex_h,
-			float r, float g, float b, float a) {
+	public static final void drawTexture(
+		GL10 gl, float x, float y, float w, float h, // 描画先
+		int texture, float u, float v, float tex_w, float tex_h, // 描画元
+		float r, float g, float b, float a // 色
+	)
+	{
+		// 要素数8の頂点バッファ用意 （XY(2値) * 4頂点 = 8要素）
+		// これは描画先の頂点リストを示す
 		float[] vertices = getVertices(8);
-		vertices[0] = -0.5f * w + x;
-		vertices[1] = -0.5f * h + y;
-		vertices[2] = 0.5f * w + x;
-		vertices[3] = -0.5f * h + y;
-		vertices[4] = -0.5f * w + x;
-		vertices[5] = 0.5f * h + y;
-		vertices[6] = 0.5f * w + x;
-		vertices[7] = 0.5f * h + y;
+		/*
+		vertices[0] = -0.5f * w + x; vertices[1] = -0.5f * h + y;
+		vertices[2] =  0.5f * w + x; vertices[3] = -0.5f * h + y;
+		vertices[4] = -0.5f * w + x; vertices[5] =  0.5f * h + y;
+		vertices[6] =  0.5f * w + x; vertices[7] =  0.5f * h + y;
+		*/
+		int vi = 0;
+		vertices[vi++] = x;     vertices[vi++] = y + h;
+		vertices[vi++] = x + w; vertices[vi++] = y + h;
+		vertices[vi++] = x;     vertices[vi++] = y;
+		vertices[vi++] = x + w; vertices[vi++] = y;
 
+		// 要素数16の色バッファ用意 （RGBA(4値) * 4頂点 = 16要素）
 		float[] colors = getColors(16);
 		for (int i = 0; i < 16; i++) {
 			colors[i++] = r;
@@ -136,15 +147,14 @@ public class GraphicUtil {
 			colors[i] = a;
 		}
 
+		// 要素数8の頂点バッファ用意 （XY(2値) * 4頂点 = 8要素）
+		// これは描画元の頂点リストを示す
+		// 左上,右上,右下,左下
 		float[] coords = getCoords(8);
-		coords[0] = u;
-		coords[1] = v + tex_h;
-		coords[2] = u + tex_w;
-		coords[3] = v + tex_h;
-		coords[4] = u;
-		coords[5] = v;
-		coords[6] = u + tex_w;
-		coords[7] = v;
+		coords[0] = u;         coords[1] = v + tex_h; // 左上
+		coords[2] = u + tex_w; coords[3] = v + tex_h; // 右上
+		coords[4] = u;         coords[5] = v;         // 右下
+		coords[6] = u + tex_w; coords[7] = v;         // 左下
 
 		FloatBuffer squareVertices = makeVerticesBuffer(vertices);
 		FloatBuffer squareColors = makeColorsBuffer(colors);
@@ -165,8 +175,12 @@ public class GraphicUtil {
 		gl.glDisable(GL10.GL_TEXTURE_2D);
 	}
 
-	public static final void drawTexture(GL10 gl, float x, float y, float w,
-			float h, int texture, float r, float g, float b, float a) {
+	public static final void drawTexture(
+		GL10 gl, float x, float y, float w, float h, // 描画先
+		int texture, // 描画元 (座標指定無し)
+		float r, float g, float b, float a // 色 
+	)
+	{
 		drawTexture(gl, x, y, w, h, texture, 0.0f, 0.0f, 1.0f, 1.0f, r, g, b, a);
 	}
 
