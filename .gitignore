@@ -30,3 +30,5 @@ proguard/
 /proguard_cache
 /bin
 /.cache
+
+/libs/scala_library.min.jar
