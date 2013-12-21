@@ -28,3 +28,4 @@ proguard/
 *.iws
 .idea/
 /proguard_cache
+/bin
