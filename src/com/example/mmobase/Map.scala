@@ -32,7 +32,8 @@ case class Chip(var chip_number: Int) { // 数だから0始まり
 
 // セル1マス (最大10チップが重なる)
 case class Cell {
-  var chips = ArrayBuffer.fill(9)(Chip(4))
+  lazy val rnd = new Random 
+  var chips = ArrayBuffer.fill(rnd.nextInt(9))(Chip(4))
   def draw(gl: GL10, dst: Dst) = chips.zipWithIndex.foreach { v =>
     val (chip, i) = v
     chip.draw(gl, Dst(dst.x, dst.y - 16 * i)) // yを16上に
